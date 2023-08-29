@@ -1,8 +1,10 @@
 import pandas as pd
 
+
 def get_data():
     data = pd.read_csv("raw_data/horse_racing_raw.csv")
     return data
+
 
 
 
@@ -12,6 +14,7 @@ def class_or_rating_average(data):
     data = data.merge(average_or_rating, on='f_class')
     data['above_below_official_rating'] = data['f_rating_or']- data['average_or_rating']
     return data
+
 
 def oli_features():
     data['RollingAvgTrainerFinish'] = data.groupby('f_trainer')['f_place'].apply(
@@ -86,3 +89,4 @@ def josh_features():
     data['5m_odds_prob'] = 1 / data['f_pm_05m']
     data['15to5m_odds_move_perc'] = (data['5m_odds_prob'] / data['15m_odds_prob'] - 1)
     data['15to5m_odds_move_raw'] = (data['5m_odds_prob'] - data['15m_odds_prob'])
+
