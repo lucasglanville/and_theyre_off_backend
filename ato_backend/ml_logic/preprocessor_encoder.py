@@ -8,16 +8,23 @@ from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 
 def preprocess_features(X: pd.DataFrame) -> np.ndarray:
 
-    ### DROP ROWS WITH NULL VALUES IN THESE COLUMNS ###
-    X.dropna(axis = 0,
-             inplace = True,
-             subset = ['f_racetype', 'f_jockey',
-                     'f_trainer', 'f_pace',
-                     'f_rating_or'])
-    print("✅ ROWS WITH NULL VALUES DROPPED")
+    ### CONVERT ODDS TO PROBABILITY ###
+    def odds_to_prob(x):
+        return 1/x
+    X['pred_isp'] = X['pred_isp'].apply(odds_to_prob)
+    X['f_pm_01m'] = X['f_pm_01m'].apply(odds_to_prob)
+    print("✅ ODDS CONVERTED TO PROBABILITY (1/ODDS)")
+
+    ### CODE WINNERS AS '1', REST AS '0' ###
+    def winner(x):
+        if x == 1:
+            return 1
+        else:
+            return 0
+    X['f_place'] = X['f_place'].apply(winner)
+    print("✅ WINNERS CODED AS '1'")
 
     ### 'f_ko' CONVERTED TO DATETIME ###
-
     X['f_ko'] = X['f_ko'].astype('datetime64[ns]')
     print("✅ 'f_ko' CONVERTED TO DATETIME")
 
@@ -38,6 +45,14 @@ def preprocess_features(X: pd.DataFrame) -> np.ndarray:
 
     X['f_going'] = X['f_going'].apply(f_going_coder)
     print("✅ TRACK CONDITIONS ORDINALLY ENCODED")
+
+    ### DROP ROWS WITH NULL VALUES IN THESE COLUMNS ###
+    X.dropna(axis = 0,
+            inplace = True,
+            subset = ['f_racetype', 'f_jockey',
+                    'f_trainer', 'f_pace',
+                    'f_rating_or'])
+    print("✅ DROPPED ROWS WITH NULL VALUES")
 
     set_config(transform_output="pandas")
     ### MINMAX SCALE NUMERIC FEATURES ###
@@ -60,10 +75,10 @@ def preprocess_features(X: pd.DataFrame) -> np.ndarray:
 
     ### COLUMN TRANSFORMER ###
     preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_transformer, numeric_features),
-            ("cat", categorical_transformer, categorical_features),
-        ],verbose_feature_names_out = False)
+        transformers=[("num", numeric_transformer, numeric_features),
+                      ("cat", categorical_transformer, categorical_features)],
+        verbose_feature_names_out = False,
+        remainder = 'passthrough')
     print("✅ COLUMN TRANSFORMER ASSEMBLED")
 
     ### FIT_TRANSFORM FEATURES ###
