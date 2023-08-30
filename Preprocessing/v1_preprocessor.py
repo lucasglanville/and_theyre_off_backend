@@ -1,4 +1,6 @@
 
+import pandas as pd
+import numpy as np
 from sklearn import set_config
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -7,11 +9,12 @@ from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 def preprocess_features(data: pd.DataFrame) -> np.ndarray:
 
     ### dropping columns ###
-    def drop_columns(x):
-      x.drop(columns=['id.1', 'f_id.1','f_place','id','f_id', 'f_ko',
-                      'f_bsp_p_back', 'f_bsp_p_lay',	'f_pm_01m_p_back',
+
+    data.drop(columns=['id.1', 'f_id.1','id','f_id', 'f_horse',
+                       'f_bsp_p_back', 'f_bsp_p_lay',	'f_pm_01m_p_back',
                       'f_pm_01m_p_lay','f_pm_15m_p_back',	'f_pm_15m_p_lay',
-                      'f_ip_min', 'f_ip_max'])
+                      'f_ip_min', 'f_ip_max'], inplace = True)
+
 
     ### CONVERT ODDS TO PROBABILITY ###
     def odds_to_prob(x):
@@ -66,10 +69,14 @@ def preprocess_features(data: pd.DataFrame) -> np.ndarray:
                         "f_runners", "f_rating_rbd",
                         "f_rating_or", "f_going", 'f_bsp',
                         'f_pm_15m',	'f_pm_10m',	'f_pm_05m',
-                        'f_pm_03m',	'f_pm_02m']
+                        'f_pm_03m',	'f_pm_02m', 'average_or_rating_class',
+                        'above_below_official_rating_class',	'PreviousPosition',
+                        'PredictedRank']
     numeric_transformer = Pipeline(
         steps=[("scaler", MinMaxScaler())])
     print("✅ NUMERIC FEATURES MINMAX-SCALED")
+
+
 
     ### O.H.E. CATEGORICAL FEATURES ###
     categorical_features = ['f_track', 'f_jockey', 'f_trainer', 'f_racetype']
