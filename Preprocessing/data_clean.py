@@ -24,6 +24,10 @@ def dropping_no_betting_data(data):
         return row
     columns_to_impute = ['f_bsp', 'f_pm_15m', 'f_pm_10m', 'f_pm_05m', 'f_pm_03m', 'f_pm_02m', 'f_pm_01m']
     data[columns_to_impute] = data[columns_to_impute].apply(impute_row, axis=1)
+
+    #deleting row that has 0s for all odds for some reason
+
+
     print(f"Cleaned up missing odds. New shape = {data.shape}")
     return data
 
@@ -110,6 +114,8 @@ if __name__ == '__main__':
     data = get_data(LOCAL_FILEPATH)
     data = remove_221_rows(data)
     data = dropping_no_betting_data(data)
+    #Dropping line that has 0 for all odds
+    data = data[data.id != 16157910000382]
     data = josh_features(data)
     data = class_or_rating_average(data)
     data = oli_features(data)
