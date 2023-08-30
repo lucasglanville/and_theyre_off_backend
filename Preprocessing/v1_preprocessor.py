@@ -62,6 +62,10 @@ def preprocess_features(data: pd.DataFrame) -> np.ndarray:
                     'f_rating_or'])
     print("✅ DROPPED ROWS WITH NULL VALUES")
 
+    ### STRIP SURROUNDING WHITESPACE ###
+    data['f_track'] = data['f_track'].str.strip()
+    print("✅ WHITESPACE STRIPPED FROM 'f_track'")
+
     ### MINMAX SCALE NUMERIC FEATURES ###
     set_config(transform_output="pandas")
     numeric_features = ["f_distance", "f_class",
