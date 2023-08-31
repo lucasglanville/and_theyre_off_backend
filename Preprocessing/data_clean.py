@@ -108,6 +108,20 @@ def oli_features(data):
     print(f"Added Oli features 4/4. New shape = {data.shape}")
     return data
 
+# Define a lambda function to apply the conditions and fill NaN values
+def fill_f_pm_01m(data):
+    def fill_nan(row):
+        if row['f_place'] == 0:
+            return -1
+        elif row['f_place'] == 1:
+            return (row['f_pm_01m'] - 1) * 0.95
+        else:
+            return row['f_pm_01m_p_back']
+
+# Apply the lambda function to fill NaN values in f_pm_01m_p_back
+    data['linear_target'] = data.apply(fill_nan, axis=1)
+    return data
+
 
 if __name__ == '__main__':
 
