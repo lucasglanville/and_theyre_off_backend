@@ -11,11 +11,11 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
     #--------------------------------------------------------------------------#
     print('number of columns: ', len(data.columns))
     ### DROP IRRELEVANT COLUMNS ###
-    redundant_columns = ["Unnamed: 0",
-                         "id",
-                         "f_id",
+    redundant_columns = [
+                         #"id",
+                         #"f_id",
                          "f_racetype",
-                         "f_horse",
+                         #"f_horse",
                          "f_jockey",
                          "f_trainer",
                          "f_rating_hc",
@@ -26,10 +26,10 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
                          "f_pm_05m",
                          "f_pm_03m",
                          "f_pm_02m",
-                         "f_pm_01m",
+                         #"f_pm_01m",
                          "f_bsp_p_back",
                          "f_bsp_p_lay",
-                         "f_pm_01m_p_back",
+                         #"f_pm_01m_p_back",
                          "f_pm_01m_p_lay",
                          "f_pm_15m_p_back",
                          "f_pm_15m_p_lay",
