@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from Preprocessing.params import *
+from params import *
 
 
 def get_data(LOCAL_FILEPATH):
