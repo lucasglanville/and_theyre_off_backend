@@ -88,7 +88,7 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
 
     #--------------------------------------------------------------------------#
 
-    ### CONVERT ODDS TO PROBABILITY ###
+    ## CONVERT ODDS TO PROBABILITY ###
     def odds_to_prob(x):
         return 1/x
     data['pred_isp'] = data['pred_isp'].apply(odds_to_prob)
