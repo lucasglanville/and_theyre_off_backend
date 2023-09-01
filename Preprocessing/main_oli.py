@@ -3,7 +3,7 @@ from v2_preprocessor_for_olis_pipeline import preprocess_features_v2
 from Models.latest_model import train_test_val, model, backtesting_func
 import pandas as pd
 
-data  = pd.read_csv("raw_data_v2.2.csv")
+data  = pd.read_csv("raw_data/raw_data_v2.2.csv")
 
 data_cleaned = remove_221_rows(data)
 data_cleaned = dropping_no_betting_data(data_cleaned)
