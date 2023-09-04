@@ -1,3 +1,0 @@
-SELECT tbl_prerace.id as id, tbl_prerace.id as f_id, f_ko, f_track, f_going, f_racetype, f_horse, f_jockey, f_trainer, f_distance, f_class, f_age, f_pace, f_weight, f_runners, pred_isp, f_rating_rbd, f_rating_or, f_place, f_bsp, f_pm_15m, f_pm_10m, f_pm_05m, f_pm_03m, f_pm_02m, f_pm_01m, f_bsp_p_back, f_bsp_p_lay, f_pm_01m_p_back, f_pm_01m_p_lay, f_pm_15m_p_back, f_pm_15m_p_lay FROM tbl_prerace
-INNER JOIN tbl_results ON tbl_results.id = tbl_prerace.id
-			
