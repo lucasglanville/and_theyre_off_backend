@@ -1,20 +1,15 @@
 import pandas as pd
 import numpy as np
-import requests
-from fastapi import FastAPI, Response
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 from pydantic import BaseModel
-import json
-from sklearn.preprocessing import MinMaxScaler
+
 from sklearn import set_config
-from sklearn.impute import SimpleImputer
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import InputLayer, Dense, Dropout
-from keras.utils import get_custom_objects
+from tensorflow.keras.layers import InputLayer, Dense
 import pandas as pd
 import numpy as np
 import pickle
-import warnings
+
 
 class Prediction(BaseModel):
     df: str
@@ -88,7 +83,7 @@ def df_post(df: Prediction):
     #Loading scaler values and scaling 5 features
     set_config(transform_output = "pandas")
     with open('api/scaler_updated2.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
-        loaded_scaler = pickle.load(f)
+      loaded_scaler = pickle.load(f)
     X = loaded_scaler.transform(X_preproc)
 
     #Adding final 2 features that don't need scaling
@@ -148,7 +143,9 @@ def df_post(df: Prediction):
 
     """7)  Loading Weights"""
 
-    NN.load_weights("Models/weights-JStone2609/custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
+
+    NN.load_weights("api/custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
+
 
     #######################################################
 
