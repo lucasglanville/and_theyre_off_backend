@@ -125,7 +125,7 @@ def fill_f_pm_01m(data):
 
 if __name__ == '__main__':
 
-    data = get_data(LOCAL_FILEPATH)
+    data = get_data("raw_data/raw_data_v2.1.csv")
     data = remove_221_rows(data)
     data = dropping_no_betting_data(data)
     #Dropping line that has 0 for all odds
