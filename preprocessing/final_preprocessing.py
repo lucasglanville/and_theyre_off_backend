@@ -51,7 +51,7 @@ X_preproc['stall_position'] = data['stall_position']
 
 #Loading scaler values and scaling 5 features
 set_config(transform_output = "pandas")
-with open('Models/JS_weights/scaler_updated2.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
+with open('Models/weights-JStone2609/scaler_updated2.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
     loaded_scaler = pickle.load(f)
 X = loaded_scaler.transform(X_preproc)
 
@@ -112,7 +112,7 @@ NN.add(Dense(2, activation='softmax')) # output layer
 
 """7)  Loading Weights"""
 
-NN.load_weights("Models/JS_weights/custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
+NN.load_weights("Models/weights-JStone2609/custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
 
 #######################################################
 
@@ -127,12 +127,13 @@ y_pred = NN.predict(X)
 backtest['model_preds'] = y_pred[:, 0:1]
 backtest['model_preds'] = round(backtest['model_preds'],2)
 backtest = backtest.sort_values(['model_preds'], ascending = False)
-backtest_live = backtest.drop(columns=['f_id', 'id', '01m_profit','f_place'])
-def bet_or_nobet(x):
-        if x >= 0.5:
-            return "BET"
-        else:
-            return "NO BET"
-backtest_live['bet'] = backtest_live['model_preds'].apply(bet_or_nobet)
+backtest_live = backtest.drop(columns=['f_id', 'id','f_place'])
+def bet_or_nobet(f_pm_01m, model_preds):
+    if f_pm_01m < 50 and model_preds > 0.9:
+        return "BET"
+    else:
+        return "NO BET"
+
+backtest_live['bet'] = backtest_live.apply(lambda row: bet_or_nobet(row['f_pm_01m'], row['model_preds']), axis=1)
 
 backtest_live
