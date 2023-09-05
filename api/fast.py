@@ -48,9 +48,10 @@ def df_post(df: Prediction):
     """1)  Getting the data and first round of preprocessing"""
     ###receiving all columns of data for user selected rows (by track and time)
 
-    #Get the data from the bucket
+    # #Get the data from the bucket
     # data = get_data("raw_data/hr_data_0409_221rem.csv") ### CHANGE THIS PATH to get data from the bucket
     # print("data loaded")
+
     #Fill in the missing odds
     # data = dropping_no_betting_data(data)
     data = data.dropna(subset=['f_bsp', 'f_pm_15m', 'f_pm_10m', 'f_pm_05m' , 'f_pm_03m', 'f_pm_02m', 'f_pm_01m'], how='all')
@@ -59,6 +60,8 @@ def df_post(df: Prediction):
         return row
     columns_to_impute = ['f_bsp', 'f_pm_15m', 'f_pm_10m', 'f_pm_05m', 'f_pm_03m', 'f_pm_02m', 'f_pm_01m']
     data[columns_to_impute] = data[columns_to_impute].apply(impute_row, axis=1)
+    #Drop stall_position NAs
+    data = data[data['stall_position'].notna()]
     #Remove horses with odds over 50 at 5m before the race
     data = data[(data['f_pm_05m'] <= 50)]
     #Reset index
@@ -77,18 +80,22 @@ def df_post(df: Prediction):
 
     """3)  Scaling the numerical values and defining X"""
 
-    #Adding f_runners to X_preproc pre-scaling
+    #Adding f_runners and stall_position to X_preproc pre-scaling
     X_preproc['f_runners'] = data['f_runners']
+    X_preproc['stall_position'] = data['stall_position']
+
 
     #Loading scaler values and scaling 5 features
     set_config(transform_output = "pandas")
-    with open('scaler_josh.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
+    with open('api/scaler_updated2.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
         loaded_scaler = pickle.load(f)
     X = loaded_scaler.transform(X_preproc)
 
     #Adding final 2 features that don't need scaling
     X['pred_isp_prob'] = 1 / data['pred_isp']
-    X['stall_position'] = data['stall_position']
+
+    #Matching the column order to the order of the original saved weights
+    X = X[['stall_position', 'iv_trainer_l16r', 'iv_jockey_l16r', 'ae_trainer_l16r', 'ae_jockey_l16r', 'pred_isp_prob', 'f_runners']]
 
     #######################################################
 
@@ -141,7 +148,7 @@ def df_post(df: Prediction):
 
     """7)  Loading Weights"""
 
-    NN.load_weights("custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
+    NN.load_weights("Models/weights-JStone2609/custom_scorer0.05_7input_l16_05mfilter_01mplace") ##CHANGE PATH TO LOAD MODEL WEIGHTS
 
     #######################################################
 
@@ -156,13 +163,14 @@ def df_post(df: Prediction):
     backtest['model_preds'] = y_pred[:, 0:1]
     backtest['model_preds'] = round(backtest['model_preds'],2)
     backtest = backtest.sort_values(['model_preds'], ascending = False)
-    backtest_live = backtest.drop(columns=['f_id', 'id', '01m_profit','f_place'])
-    def bet_or_nobet(x):
-            if x >= 0.5:
-                return "BET"
-            else:
-                return "NO BET"
-    backtest_live['bet'] = backtest_live['model_preds'].apply(bet_or_nobet)
+    backtest_live = backtest.drop(columns=['f_id', 'id','f_place'])
+    def bet_or_nobet(f_pm_01m, model_preds):
+        if f_pm_01m < 50 and model_preds > 0.9:
+            return "BET"
+        else:
+            return "NO BET"
+
+    backtest_live['bet'] = backtest_live.apply(lambda row: bet_or_nobet(row['f_pm_01m'], row['model_preds']), axis=1)
 
     ### API RETURN
     return {"df": backtest_live.to_json()}
