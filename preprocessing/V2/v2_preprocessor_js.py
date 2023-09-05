@@ -113,22 +113,22 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
 
     #--------------------------------------------------------------------------#
 
-    # ### ENCODE THE GOING (GROUND CONDITION) ###
-    # def f_going_coder(x):
-    #     if x == 'FRM':
-    #         return 1
-    #     elif x == 'GTF':
-    #         return 2
-    #     elif x == 'GD' or x == 'GTY' or x == 'STD':
-    #         return 3
-    #     elif x == 'YLD' or x == 'YTS' or x == 'STSL' or x == 'GTS':
-    #         return 4
-    #     elif x == 'SFT':
-    #         return 5
-    #     elif x == 'HVY' or x == 'HTS':
-    #         return 6
-    # data['f_going'] = data['f_going'].apply(f_going_coder)
-    # print("✅ TRACK CONDITIONS ORDINALLY ENCODED")
+    ### ENCODE THE GOING (GROUND CONDITION) ###
+    def f_going_coder(x):
+        if x == 'FRM':
+            return 1
+        elif x == 'GTF':
+            return 2
+        elif x == 'GD' or x == 'GTY' or x == 'STD':
+            return 3
+        elif x == 'YLD' or x == 'YTS' or x == 'STSL' or x == 'GTS':
+            return 4
+        elif x == 'SFT':
+            return 5
+        elif x == 'HVY' or x == 'HTS':
+            return 6
+    data['f_going'] = data['f_going'].apply(f_going_coder)
+    print("✅ TRACK CONDITIONS ORDINALLY ENCODED")
 
     #--------------------------------------------------------------------------#
 
@@ -215,20 +215,20 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
 
     #--------------------------------------------------------------------------#
 
-    # ### IMPUTE HEADGEAR NULLS WITH 'no_headgear' ###
-    # headgear_feature = ["f_headgear"]
-    # headgear_imputer = Pipeline(
-    #     steps=[("imputer", SimpleImputer(strategy = 'constant',
-    #                                      fill_value = 'no_headgear'))])
-    # print("✅ IMPUTED 'no_headgear' for NULLS IN 'f_headgear'")
+    ### IMPUTE HEADGEAR NULLS WITH 'no_headgear' ###
+    headgear_feature = ["f_headgear"]
+    headgear_imputer = Pipeline(
+        steps=[("imputer", SimpleImputer(strategy = 'constant',
+                                         fill_value = 'no_headgear'))])
+    print("✅ IMPUTED 'no_headgear' for NULLS IN 'f_headgear'")
 
     #--------------------------------------------------------------------------#
 
-    # ### MEAN IMPUTE CERTAIN FEATURES ###
-    # mean_impute_features = ["f_dob", "f_prb_avg"]
-    # mean_imputer = Pipeline(
-    #     steps=[("imputer", SimpleImputer(strategy = 'mean'))])
-    # print("✅ IMPUTED MEAN FOR NULLS IN 'f_dob' & 'f_prb_avg'")
+    ### MEAN IMPUTE CERTAIN FEATURES ###
+    mean_impute_features = ["f_dob", "f_prb_avg"]
+    mean_imputer = Pipeline(
+        steps=[("imputer", SimpleImputer(strategy = 'mean'))])
+    print("✅ IMPUTED MEAN FOR NULLS IN 'f_dob' & 'f_prb_avg'")
 
     #--------------------------------------------------------------------------#
 
@@ -298,12 +298,12 @@ def preprocess_features_v2(data: pd.DataFrame) -> np.ndarray:
 
     #--------------------------------------------------------------------------#
 
-    # ### O.H.E. CATEGORICAL FEATURES ###
-    # categorical_features = ["f_track", "f_headgear", "country"]
-    # categorical_transformer = Pipeline(
-    #     steps=[("encoder", OneHotEncoder(handle_unknown="ignore",
-    #                                  sparse_output=False))])
-    # print("✅ CAT. FEATURES OH-ENCODED (Track, Headgear, Country)")
+    ### O.H.E. CATEGORICAL FEATURES ###
+    categorical_features = ["f_track", "f_headgear", "country"]
+    categorical_transformer = Pipeline(
+        steps=[("encoder", OneHotEncoder(handle_unknown="ignore",
+                                     sparse_output=False))])
+    print("✅ CAT. FEATURES OH-ENCODED (Track, Headgear, Country)")
 
     #--------------------------------------------------------------------------#
 
