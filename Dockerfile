@@ -1,15 +1,16 @@
-FROM python:3.10.6-buster
+FROM tensorflow/tensorflow:2.10.0
 
-WORKDIR /interface
+# WORKDIR /api
 
-COPY requirements.txt requirements.txt
+COPY requirements-Docker.txt requirements.txt
+COPY api/ api/
+
+
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# COPY interface interface
-# COPY setup.py setup.py
-# RUN pip install .
+
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-CMD uvicorn interface.fast:app --host 0.0.0.0 --port $PORT
+CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT

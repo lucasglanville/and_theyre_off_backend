@@ -4,7 +4,6 @@ ipdb
 ipykernel
 yapf
 matplotlib
-pygeohash
 pytest
 seaborn
 numpy==1.23.5
@@ -22,7 +21,6 @@ tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
 
 # prevent bq 3+ db-dtypes package error when running training from bq
 
-mlflow==2.1.1
 
 python-dotenv
 prefect==2.8.1
