@@ -24,6 +24,8 @@ data = get_data("raw_data/hr_data_0409_221rem.csv") ### CHANGE THIS PATH to get 
 print("data loaded")
 #Fill in the missing odds
 data = dropping_no_betting_data(data)
+#Drop stall_position NAs
+data = data[data['stall_position'].notna()]
 #Remove horses with odds over 50 at 5m before the race
 data = data[(data['f_pm_05m'] <= 50)]
 #Reset index
@@ -42,18 +44,22 @@ X_preproc = X_preproc.fillna(0)
 
 """3)  Scaling the numerical values and defining X"""
 
-#Adding f_runners to X_preproc pre-scaling
+#Adding f_runners and stall_position to X_preproc pre-scaling
 X_preproc['f_runners'] = data['f_runners']
+X_preproc['stall_position'] = data['stall_position']
+
 
 #Loading scaler values and scaling 5 features
 set_config(transform_output = "pandas")
-with open('Models/JS_weights/scaler_josh.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
+with open('Models/JS_weights/scaler_updated2.pkl', 'rb') as f: # CHANGE THIS PATH to get the saved scalar
     loaded_scaler = pickle.load(f)
 X = loaded_scaler.transform(X_preproc)
 
 #Adding final 2 features that don't need scaling
 X['pred_isp_prob'] = 1 / data['pred_isp']
-X['stall_position'] = data['stall_position']
+
+#Matching the column order to the order of the original saved weights
+X = X[['stall_position', 'iv_trainer_l16r', 'iv_jockey_l16r', 'ae_trainer_l16r', 'ae_jockey_l16r', 'pred_isp_prob', 'f_runners']]
 
 #######################################################
 
