@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-CMD uvicorn api.fast:app --host 0.0.0.0 --port $PORT
+CMD uvicorn api.fast2:app --host 0.0.0.0 --port $PORT
