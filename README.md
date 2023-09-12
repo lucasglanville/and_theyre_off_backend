@@ -17,4 +17,11 @@ Our model and strategy resulted in a 29% ROI over 1000 simulated backings in the
 
 
 
+
+### Simulated results
+
+Here are our simulated profits of betting £1 on each horse that our model indicates. To compare, we also show the results of betting £1 every race on the horse with the best odds, betting £1 on every horse, and one of the best strategies there is, not betting at all:
+
 ![alt text](https://github-production-user-asset-6210df.s3.amazonaws.com/123101163/267362395-21dafab8-58d6-4acc-821a-a3705cce5acf.png "Returns vs baselines")
+
+Unsurprisingly, betting on every horse is a sure-fire way to lose all your money. Betting on the horse with the best odds appears to be a damage-limiting strategy, making a small loss. Our neural network model is profitable over this test set, and over a reasonably large sample size too - it places 999 total bets over the 4150 races.
