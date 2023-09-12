@@ -2,7 +2,7 @@
 
 # AND THEY'RE OFF 
 
-[Website](https://andtheyreoff.streamlit.app/)
+🏇 [Website](https://andtheyreoff.streamlit.app/)
 
 
 Welcome to AND THEY'RE OFF, a data-science project that uses a deep learning approach for predicting the age-old sport of horse racing.
