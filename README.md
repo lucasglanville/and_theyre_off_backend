@@ -1,3 +1,5 @@
+![alt text](https://github.com/lucasglanville/and_theyre_off_backend/assets/123101163/af2fcd24-8dd3-401e-a802-71a508e3a723 "Logo")
+
 # AND THEY'RE OFF 
 
 [Website](https://andtheyreoff.streamlit.app/)
