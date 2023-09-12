@@ -3,7 +3,7 @@
 [Website](https://andtheyreoff.streamlit.app/)
 
 
-Welcome to AND THEY'RE OFF, a data-science project that uses a deep learning approach for horse racing predictions.
+Welcome to AND THEY'RE OFF, a data-science project that uses a deep learning approach for predicting the age-old sport of horse racing.
 Our team set out to create an innovative model capable of forecasting the profitability of each horse in any given Flat Handicap race.
 
 ### Using Neural Networks to analyse historic horse-racing data
