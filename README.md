@@ -1,6 +1,6 @@
 # AND THEY'RE OFF
 
-[Website]([https://www.google.com](https://andtheyreoff.streamlit.app/))
+[Website](https://andtheyreoff.streamlit.app/)
 
 
 Welcome to AND THEY'RE OFF, a data-science project that combines futuristic deep-learning techniques with the age-old sport of horse racing.
