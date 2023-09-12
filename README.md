@@ -4,7 +4,7 @@
 
 
 Welcome to AND THEY'RE OFF, a data-science project that combines futuristic deep-learning techniques with the age-old sport of horse racing.
-Our team set out to create an innovative model capable of forecasting the profitability of each horse in any given Flat Handicap race. We've replaced gut-feelings, intuition, and useless tips from Dave down the pub with a reliable long-term strategy in the marketplace. Forget Dave, we've brought you the power of Neural Networks!
+Our team set out to create an innovative model capable of forecasting the profitability of each horse in any given Flat Handicap race.
 
 ### Using Neural Networks to analyse historic horse-racing data
 
